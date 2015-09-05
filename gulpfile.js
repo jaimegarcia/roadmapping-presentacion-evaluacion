@@ -57,6 +57,12 @@ gulp.task('images', ['clean:images'], function() {
     .pipe(connect.reload());
 });
 
+gulp.task('fonts', ['clean:fonts'], function() {
+  return gulp.src('src/fonts/**/*')
+    .pipe(gulp.dest('dist/fonts'))
+    .pipe(connect.reload());
+});
+
 gulp.task('pdf', ['clean:pdf'], function() {
   return gulp.src('src/pdf/**/*')
     .pipe(gulp.dest('dist/pdf'))
@@ -88,6 +94,11 @@ gulp.task('clean:images', function() {
     .pipe(rimraf());
 });
 
+gulp.task('clean:fonts', function(done) {
+  return gulp.src('dist/fonts')
+    .pipe(rimraf());
+});
+
 gulp.task('clean:pdf', function(done) {
   return gulp.src('dist/pdf')
     .pipe(rimraf());
@@ -106,6 +117,7 @@ gulp.task('watch', function() {
   gulp.watch('src/**/*.jade', ['html']);
   gulp.watch('src/styles/**/*.styl', ['css']);
   gulp.watch('src/images/**/*', ['images']);
+  gulp.watch('src/fonts/**/*', ['fonts']);
   gulp.watch('src/pdf/**/*', ['pdf']);
   gulp.watch([
     'src/scripts/**/*.js',
@@ -117,6 +129,6 @@ gulp.task('deploy', ['build'], function(done) {
   ghpages.publish(path.join(__dirname, 'dist'), { logger: gutil.log }, done);
 });
 
-gulp.task('build', ['js', 'html', 'css', 'images','pdf']);
+gulp.task('build', ['js', 'html', 'css', 'images','fonts','pdf']);
 gulp.task('serve', ['connect', 'watch']);
 gulp.task('default', ['build']);
